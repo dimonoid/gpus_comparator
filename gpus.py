@@ -16,8 +16,8 @@ debug = False
 region = 'ca'  # 'us', 'ca', etc.
 currency = 'CAD$'  # 'USD$', 'CAD$', etc. Affects only labels.
 limit = 100  # 20, 40, 60, 80, 100, etc. Affects speed, larger number is slower but less likely to miss a lower price.
-table_N = 1  # 0 Regular, 1 Ray Tracing
-column_N = 4  # 1, 2, 3, 4
+table_N = 0  # 0 Regular, 1 Ray Tracing
+column_N = 3  # 1, 2, 3, 4
 
 columns = {
     1: '1080p Ultra',
@@ -93,7 +93,9 @@ gpus_example = [Gpu('RX7900XTX', 372, [999]),
 
 
 def download_page(url):
-    response = requests.get(url)
+    response = requests.get(url,
+                            headers={"Cache-Control": "no-cache",
+                                     "Pragma": "no-cache"})
     response.raise_for_status()
     return response.text
 

@@ -8,6 +8,10 @@ Uses data from [tomshardware.com](https://www.tomshardware.com/) and [pcpartpick
 
 Uses modified version of pypartpicker parser from here: https://github.com/thefakequake/pypartpicker
 
+Warning: [tomshardware.com](https://www.tomshardware.com/) website may return different values when connected to Wi-Fi
+vs on mobile data.
+It is probably related to ISP caching.
+
 # Screenshots:
 
 ## No raytracing:
