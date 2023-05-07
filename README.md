@@ -23,6 +23,10 @@ It is probably related to ISP caching.
 
 <img src="Screenshots/us.png">
 
+<img src="Screenshots/ca_1440p.png">
+
+<img src="Screenshots/us_1440p.png">
+
 <img src="Screenshots/ca_4k.png">
 
 <img src="Screenshots/us_4k.png">
