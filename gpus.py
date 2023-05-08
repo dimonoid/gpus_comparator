@@ -17,7 +17,7 @@ region = 'us'  # 'us', 'ca', etc.
 currency = 'USD$'  # 'USD$', 'CAD$', etc. Affects only labels.
 limit = 100  # 20, 40, 60, 80, 100, etc. Affects speed, larger number is slower but less likely to miss a lower price.
 table_N = 0  # 0 Regular, 1 Ray Tracing
-column_N = 3  # 1, 2, 3, 4
+column_N = 1  # 1, 2, 3, 4
 
 columns = {
     1: '1080p Ultra',
@@ -25,6 +25,22 @@ columns = {
     3: '1440p Ultra',
     4: '4K Ultra'
 }
+
+
+class Price:
+    def __init__(self, price, currency):
+        self.price = price
+        self.currency = currency
+
+    def __str__(self):
+        return ('Price(' +
+                str(self.price) + ', ' +
+                str(self.currency) +
+                ')'
+                )
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Gpu:
@@ -41,12 +57,11 @@ class Gpu:
         self.bad = False
 
     def __str__(self):
-        return (str(self.name) + ' ' +
-                str(self.fps) + ' ' +
-                str(self.best_price()) + ' ' +
-                str(self.fps_per_dollar()) + ' ' +
-                str(self.marginal_fps_per_extra_dollar) + ' ' +
-                str(self.bad)
+        return ('Gpu(' +
+                '\"' + str(self.name) + '\", ' +
+                str(self.fps) + ', ' +
+                str(self.prices) +
+                ')'
                 )
 
     def __repr__(self):
@@ -113,10 +128,10 @@ def parse(url):
     for row in table_data:
         if len(row) == 0:
             continue
-        name = re.match(r'^[ \t\r\n\f]*(.*)[ \t\r\n\f]+\(.*\)', row[0]).group(1)
+        name = re.match(r'^[ \t\r\n\f]*(.*?)[ \t\r\n\f]*(\(.*\))?$', row[0]).group(1)
 
         try:
-            fps = re.match(r'^.*\((\d*\.\d*)fps\)', row[column_N]).group(1)  # eg. 1080p Ultra column
+            fps = re.match(r'^.*\((\d*\.\d*)fps\)$', row[column_N]).group(1)  # eg. 1080p Ultra column
         except AttributeError:
             fps = 0
             continue
@@ -127,7 +142,7 @@ def parse(url):
     return parsed_gpus
 
 
-def pc_part_picker_2(parsed_gpus):
+def pc_part_picker_2(parsed_gpus, region='us', limit=100):
     pcpp = pypartpicker.Scraper()
 
     for i, gpu in enumerate(parsed_gpus):
@@ -226,7 +241,12 @@ def remove_bad_gpus(gpus):
     return gpus_out
 
 
-def plot(gpus=None):
+def print_gpus(gpus):
+    for gpu in gpus:
+        print(gpu)
+
+
+def plot(gpus=None, region='us', currency='$'):
     if gpus is None:
         gpus = gpus_example
 
@@ -279,13 +299,14 @@ def plot(gpus=None):
 if __name__ == '__main__':
     if debug:
         print('Debug mode')
+        print_gpus(gpus_example)
         plot()
     else:
         gpus = parse('https://www.tomshardware.com/reviews/gpu-hierarchy,4388.html')
-        gpus = pc_part_picker_2(gpus)
+        gpus = pc_part_picker_2(gpus, region=region, limit=limit)
         gpus = add_sale_prices_manually(gpus)
         gpus = clean_gpus(gpus)
         gpus = calculate_margin_gpus(gpus)
         gpus = remove_bad_gpus(gpus)
-        print(gpus)
-        plot(gpus)
+        print_gpus(gpus)
+        plot(gpus, region=region, currency=currency)
