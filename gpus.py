@@ -28,7 +28,7 @@ columns = {
 
 
 class Price:
-    def __init__(self, price, currency):
+    def __init__(self, price, currency='$USD'):
         self.price = price
         self.currency = currency
 
@@ -41,6 +41,13 @@ class Price:
 
     def __repr__(self):
         return self.__str__()
+
+    def get(self, other_currency='$USD'):
+        if self.currency == other_currency:
+            return self.price
+        else:
+            return None  # TODO: implement currency conversion to estimate arbitrage opportunities
+            # return (other_currency / self.currency) * self.price
 
 
 class Gpu:
