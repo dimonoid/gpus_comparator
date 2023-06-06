@@ -13,11 +13,11 @@ from time import sleep
 # from pcpartpicker import API
 
 debug = False
-region = 'us'  # 'us', 'ca', etc.
-currency = 'USD$'  # 'USD$', 'CAD$', etc. Affects only labels.
+region = 'ca'  # 'us', 'ca', etc.
+currency = 'CAD$'  # 'USD$', 'CAD$', etc. Affects only labels.
 limit = 100  # 20, 40, 60, 80, 100, etc. Affects speed, larger number is slower but less likely to miss a lower price.
 table_N = 0  # 0 Regular, 1 Ray Tracing
-column_N = 1  # 1, 2, 3, 4
+column_N = 3  # 1, 2, 3, 4
 
 columns = {
     1: '1080p Ultra',
